@@ -1,0 +1,6 @@
+{
+  "name": "MSCC Project Hub",
+  "description": "ระบบคลังโครงงานและนวัตกรรม วิทยาลัยแม่สอด (Mae Sot Technical College Innovation & Project Repository)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

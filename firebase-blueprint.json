@@ -1,0 +1,135 @@
+{
+  "entities": {
+    "Department": {
+      "title": "Department",
+      "description": "Educational departments in Mae Sot Technical College",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 200, "description": "Department name" },
+        "slug": { "type": "string", "maxLength": 100, "description": "URL slug" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Brief description" },
+        "imageUrl": { "type": "string", "maxLength": 1000, "description": "Cover image URL" },
+        "icon": { "type": "string", "maxLength": 100, "description": "Icon identifier" },
+        "color": { "type": "string", "maxLength": 50, "description": "Badge/Theme color" },
+        "isActive": { "type": "boolean", "description": "Active visibility flag" },
+        "order": { "type": "number", "description": "Display order" },
+        "createdAt": { "type": "string", "maxLength": 100, "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "maxLength": 100, "description": "Update timestamp" }
+      },
+      "required": ["name", "slug", "isActive", "order"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Student project and innovation submission",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "maxLength": 100, "description": "Project ID identifier" },
+        "title": { "type": "string", "maxLength": 500, "description": "Project title" },
+        "slug": { "type": "string", "maxLength": 200, "description": "URL friendly slug" },
+        "departmentId": { "type": "string", "maxLength": 100, "description": "Department reference ID" },
+        "departmentName": { "type": "string", "maxLength": 200, "description": "Department name" },
+        "educationLevel": { "type": "string", "enum": ["ปวช.", "ปวส."], "description": "Education level" },
+        "studySystem": { "type": "string", "enum": ["ปกติ", "ทวิภาคี"], "description": "Study system" },
+        "academicYear": { "type": "string", "maxLength": 20, "description": "Academic year" },
+        "category": { "type": "string", "maxLength": 100, "description": "Project category" },
+        "projectType": { "type": "string", "maxLength": 100, "description": "Project type" },
+        "abstract": { "type": "string", "maxLength": 5000, "description": "Project abstract" },
+        "background": { "type": "string", "maxLength": 5000, "description": "Background and rationale" },
+        "objectives": { "type": "string", "maxLength": 5000, "description": "Project objectives" },
+        "scope": { "type": "string", "maxLength": 5000, "description": "Project scope" },
+        "methodology": { "type": "string", "maxLength": 5000, "description": "Development methodology" },
+        "technologies": { "type": "string", "maxLength": 2000, "description": "Tools and tech stack" },
+        "results": { "type": "string", "maxLength": 5000, "description": "Project outcome and results" },
+        "benefits": { "type": "string", "maxLength": 5000, "description": "Expected benefits" },
+        "recommendations": { "type": "string", "maxLength": 5000, "description": "Future recommendations" },
+        "advisorName": { "type": "string", "maxLength": 200, "description": "Advisor name" },
+        "companyName": { "type": "string", "maxLength": 300, "description": "Enterprise company name for dual system" },
+        "coverImage": { "type": "string", "maxLength": 1000, "description": "Cover image URL" },
+        "videoUrl": { "type": "string", "maxLength": 1000, "description": "Video or YouTube URL" },
+        "githubUrl": { "type": "string", "maxLength": 1000, "description": "GitHub repository URL" },
+        "demoUrl": { "type": "string", "maxLength": 1000, "description": "Live demo or website URL" },
+        "featured": { "type": "boolean", "description": "Featured showcase flag" },
+        "award": { "type": "string", "maxLength": 500, "description": "Award name and honor" },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"], "description": "Publication status" },
+        "publishedAt": { "type": "string", "maxLength": 100, "description": "Publish timestamp" },
+        "viewsCount": { "type": "number", "description": "View counts" },
+        "createdAt": { "type": "string", "maxLength": 100, "description": "Created timestamp" },
+        "updatedAt": { "type": "string", "maxLength": 100, "description": "Updated timestamp" }
+      },
+      "required": ["title", "departmentId", "educationLevel", "studySystem", "academicYear", "status"]
+    },
+    "AcademicYear": {
+      "title": "AcademicYear",
+      "description": "Academic school year configuration",
+      "type": "object",
+      "properties": {
+        "year": { "type": "string", "maxLength": 20, "description": "BE Year e.g. 2567" },
+        "label": { "type": "string", "maxLength": 100, "description": "Display label" },
+        "isActive": { "type": "boolean", "description": "Active year" },
+        "createdAt": { "type": "string", "maxLength": 100, "description": "Timestamp" }
+      },
+      "required": ["year", "label", "isActive"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Project innovation category",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 200, "description": "Category name" },
+        "description": { "type": "string", "maxLength": 1000, "description": "Description" },
+        "isActive": { "type": "boolean", "description": "Active flag" },
+        "order": { "type": "number", "description": "Order position" }
+      },
+      "required": ["name", "isActive", "order"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Global website settings",
+      "type": "object",
+      "properties": {
+        "collegeName": { "type": "string", "maxLength": 300, "description": "College name" },
+        "logo": { "type": "string", "maxLength": 1000, "description": "Logo URL" },
+        "contact": { "type": "string", "maxLength": 1000, "description": "Contact info" },
+        "websiteDescription": { "type": "string", "maxLength": 1000, "description": "Website description" }
+      },
+      "required": ["collegeName"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Designated administrator identity",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 200, "description": "Admin email" },
+        "role": { "type": "string", "maxLength": 50, "description": "Role label" },
+        "createdAt": { "type": "string", "maxLength": 100, "description": "Created timestamp" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/departments/{departmentId}": {
+      "schema": { "$ref": "#/entities/Department" },
+      "description": "List of college departments"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "List of student projects and innovation reports"
+    },
+    "/academicYears/{yearId}": {
+      "schema": { "$ref": "#/entities/AcademicYear" },
+      "description": "Academic years list"
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Project categories"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/Setting" },
+      "description": "Site global settings"
+    },
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Admin authority document"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email == "trithepwangsing175@gmail.com" && request.auth.token.email_verified == true) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Departments Collection
+    match /departments/{departmentId} {
+      allow read: if resource.data.isActive == true || isAdmin();
+      allow write: if isAdmin() && isValidId(departmentId);
+    }
+
+    // Projects Collection
+    match /projects/{projectId} {
+      // Visitors can read published projects; Admin can read all (including drafts)
+      allow get: if resource.data.status == 'published' || isAdmin();
+      allow list: if resource.data.status == 'published' || isAdmin();
+
+      // Admin has full CRUD
+      allow create: if isAdmin() && isValidId(projectId);
+      allow delete: if isAdmin() && isValidId(projectId);
+
+      // Updates can be performed by Admin, or incrementing viewsCount by visitors
+      allow update: if (isAdmin() && isValidId(projectId)) || (
+        resource.data.status == 'published' &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewsCount']) &&
+        request.resource.data.viewsCount is number
+      );
+    }
+
+    // Academic Years Collection
+    match /academicYears/{yearId} {
+      allow read: if resource.data.isActive == true || isAdmin();
+      allow write: if isAdmin() && isValidId(yearId);
+    }
+
+    // Categories Collection
+    match /categories/{categoryId} {
+      allow read: if resource.data.isActive == true || isAdmin();
+      allow write: if isAdmin() && isValidId(categoryId);
+    }
+
+    // Settings Collection
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidId(settingId);
+    }
+
+    // Admins Collection
+    match /admins/{adminUid} {
+      allow read: if isSignedIn() && (request.auth.uid == adminUid || isAdmin());
+      allow write: if isAdmin() && isValidId(adminUid);
+    }
+  }
+}
